@@ -7,9 +7,9 @@ import pymongo
 from Mail import sendMail
 
 
-myDatabase = pymongo.MongoClient("mongodb+srv://semih:semih123@cluster0.ceuft.mongodb.net/?retryWrites=true&w=majority") #maskapp adlı veritabanımıza bağlandık
+myDatabase = pymongo.MongoClient("connection_url") #maskapp adlı veritabanımıza bağlandık
 users = myDatabase.test.users # maskapp adlı veritabanımızın users adlı collection'ınını users adlı bir değişkene atadık.
-url = "http://flask-maskapp.herokuapp.com/users"
+url = "url..."
 headers={
     "content-type": "application/json"
 }
