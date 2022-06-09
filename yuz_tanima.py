@@ -6,7 +6,7 @@ import requests
 import pymongo
 from Mail import sendMail
 
-
+"""
 myDatabase = pymongo.MongoClient("connection_url") #maskapp adlı veritabanımıza bağlandık
 users = myDatabase.test.users # maskapp adlı veritabanımızın users adlı collection'ınını users adlı bir değişkene atadık.
 url = "url..."
@@ -18,7 +18,7 @@ def dataBaseAdd(number):
     user = users.find_one({"number":number})
     if(user):
         requests.put(f"{url}/{str(user['_id'])}",headers=headers)
-
+"""
   
 taniyici = cv2.face.LBPHFaceRecognizer_create()     #yüz tanıyıcı olusturuldu
 taniyici.read("deneme/deneme.yml")                  #tanıyıcı deneme.yml dosyasını okuyacak
@@ -57,9 +57,10 @@ while(True):
             number = "032090079"
             email = "032090079@ogr.uludag.edu.tr"
             if calistiC:
-                sendMail(email)
-                dataBaseAdd(number)
+                #sendMail(email)
+                #dataBaseAdd(number)
                 calistiC = False
+        """
         elif(Id == 2):
             name = "Semih"
             number="032090010"
@@ -92,7 +93,7 @@ while(True):
                 calistiAG = False
                 sendMail(email)
                 dataBaseAdd(number)
-
+        """
         #yuz tanıma için cerceve ebatları belirlendi
         cv2.rectangle(kamera, (x - 22, y - 90), (x + w + 22, y - 22), (0, 255, 0), -1)
         
