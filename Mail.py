@@ -9,7 +9,7 @@ def sendMail(email):
     password = r'orneksifre'
     toMail = email
 
-    msg = "Sevgili öğrencimiz lütfen bir dahaki dersinizde maskenizi takınız "
+    msg = "Sevgili öğrencimiz lütfen bir sonraki dersinizde maskenizi takınız "
 
     mesaj = MIMEMultipart()
     mesaj["From"] = fromMail      # Gönderen kişi
