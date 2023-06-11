@@ -4,6 +4,7 @@ import cv2      #opencv kütüphanesi eklendi
 import numpy as np
 import requests
 import pymongo
+import matplotlib.pyplot as plt
 from Mail import sendMail
 
 """
@@ -17,13 +18,14 @@ headers={
 def dataBaseAdd(number):
     user = users.find_one({"number":number})
     if(user):
-        requests.put(f"{url}/{str(user['_id'])}",headers=headers)
+        requests.put(f"{https://maskapp-backend.onrender.com/users}/{str(user['_id'])}",headers=headers)
 """
   
 recognizer = cv2.face.LBPHFaceRecognizer_create()     #yüz tanıyıcı olusturuldu
 recognizer.read("face_yml/deneme.yml")                  #tanıyıcı deneme.yml dosyasını okuyacak
 
 yolsiniflandirici = "haarcascade_frontalface_default.xml"
+accuracy_rates = []
 
 yuzsiniflandirici = cv2.CascadeClassifier(yolsiniflandirici)    #kullanılacak yol atandı
 #font = cv2.FONT_HERSHEY_SIMPLEX #yazi tipi belirlendi
@@ -49,6 +51,7 @@ while(True):
         print(Id)
         accuracy_rate = 100 - conf
         print(f"{accuracy_rate: .2f}") #Doğruluk oranı
+        accuracy_rates.append(accuracy_rate)
         print("\n")
 
         #Id leri tanıtılan kişilerin tanındıktan sonra ceza eklendiği kısım.
@@ -105,6 +108,12 @@ while(True):
     #Yuz tanıma programının sonlandırılması.
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
+plt.plot(accuracy_rates)
+plt.title('Accuracy Rate Over Time')
+plt.xlabel('Time')
+plt.ylim(20, 80)
+plt.ylabel('Accuracy Rate')
+plt.show()
 
 vid_cam.release()
 cv2.destroyAllWindows()
