@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 from Mail import sendMail
 
 
-myDatabase = pymongo.MongoClient("mongodb+srv://semih:semih123@cluster0.ceuft.mongodb.net/test?retryWrites=true&w=majority") #maskapp adlı veritabanımıza bağlandık
+myDatabase = pymongo.MongoClient("******") #maskapp adlı veritabanımıza bağlandık
 users = myDatabase.test.users # maskapp adlı veritabanımızın users adlı collection'ınını users adlı bir değişkene atadık.
-url = "https://maskapp-backend.onrender.com/users"
+url = "*******"
 headers={
     "content-type": "application/json"
 }
