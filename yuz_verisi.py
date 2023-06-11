@@ -4,7 +4,7 @@ import cv2      #opencv kütüphanesi eklendi
 
 vid_cam = cv2.VideoCapture(0)   #video kamera tanımlandı
 
-yuz_dedektor = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+yuz_dedektor = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
 yuz_ismi = 1    #her farklı yüz için farklı numara tanımlanacak
 sayi = 1        #çekilecek fotoğraf sayısı
