@@ -1,17 +1,16 @@
 """veri setimizi eğittiğimiz modül"""
 
 from email.mime import image
-import imp
 import cv2
 import os
 import numpy as np
 from PIL import Image
 
 #verisetimizin eğitimini aşağıdaki komutla tanıyıcı üzerinden yapacağız
-tanıyıcı = cv2.face.LBPHFaceRecognizer_create() 
+recognizer = cv2.face.LBPHFaceRecognizer_create() 
 
 #görüntülerdeki yuz alanlarını ayırmak için aşağıdaki xml filtresini kullanacağız
-dedektor = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
 #görüntü etiketlerimizi almak için kullanacağımız fonksiyon
 def getImagesAndLabels(path):
@@ -35,7 +34,7 @@ def getImagesAndLabels(path):
         print(id)
 
         #img_numpy görüntü numpy dizisinde bulunan yüz alanlarını bulup yuzler listesine attık
-        yuzler = dedektor.detectMultiScale(img_numpy)
+        yuzler = detector.detectMultiScale(img_numpy)
 
         #yuzler listesini döngüye sokup her bir görüntüyü yuzornekleri,
         #  ona karşılık gelen etiketi ise isimler listesine ekliyoruz.
@@ -46,7 +45,7 @@ def getImagesAndLabels(path):
     return yuzornekleri, isimler
 
 yuzler, isimler = getImagesAndLabels("veri")    #listelerimiz olustu
-tanıyıcı.train(yuzler, np.array(isimler))   #veri setimizi eğitiyoruz
+recognizer.train(yuzler, np.array(isimler))   #veri setimizi eğitiyoruz
 
 #eğitilmiş veriseti bilgilerimizi; deneme klasörü içindeki deneme.yml dosyamıza kaydettik
-tanıyıcı.save("deneme/deneme.yml") 
+recognizer.save("face_yml/deneme.yml") 
