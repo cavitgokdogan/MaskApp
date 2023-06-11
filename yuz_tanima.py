@@ -20,8 +20,8 @@ def dataBaseAdd(number):
         requests.put(f"{url}/{str(user['_id'])}",headers=headers)
 """
   
-taniyici = cv2.face.LBPHFaceRecognizer_create()     #yüz tanıyıcı olusturuldu
-taniyici.read("deneme/deneme.yml")                  #tanıyıcı deneme.yml dosyasını okuyacak
+recognizer = cv2.face.LBPHFaceRecognizer_create()     #yüz tanıyıcı olusturuldu
+recognizer.read("face_yml/deneme.yml")                  #tanıyıcı deneme.yml dosyasını okuyacak
 
 yolsiniflandirici = "haarcascade_frontalface_default.xml"
 
@@ -44,10 +44,11 @@ while(True):
     for(x, y, w, h) in yuzler:
         cv2.rectangle(kamera, (x - 20, y - 20), (x + w + 20, y + h + 20), (0, 255, 0), 4)   #Yüzün çevresini çevreleyen dikdörtgen.
         #Id ve conf degerini dondurur
-        Id, conf = taniyici.predict(gri[y: y+h, x: x+w])    #?????
+        Id, conf = recognizer.predict(gri[y: y+h, x: x+w])    #?????
 
         print(Id)
-        print(100 - conf) #Doğruluk oranı
+        accuracy_rate = 100 - conf
+        print(f"{accuracy_rate: .2f}") #Doğruluk oranı
         print("\n")
 
         #Id leri tanıtılan kişilerin tanındıktan sonra ceza eklendiği kısım.
