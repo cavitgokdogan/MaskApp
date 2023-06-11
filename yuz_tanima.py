@@ -4,22 +4,33 @@ import cv2      #opencv kütüphanesi eklendi
 import numpy as np
 import requests
 import pymongo
+import json
 import matplotlib.pyplot as plt
 from Mail import sendMail
 
-"""
-myDatabase = pymongo.MongoClient("connection_url") #maskapp adlı veritabanımıza bağlandık
+
+myDatabase = pymongo.MongoClient("mongodb+srv://semih:semih123@cluster0.ceuft.mongodb.net/test?retryWrites=true&w=majority") #maskapp adlı veritabanımıza bağlandık
 users = myDatabase.test.users # maskapp adlı veritabanımızın users adlı collection'ınını users adlı bir değişkene atadık.
-url = "url..."
+url = "https://maskapp-backend.onrender.com/users"
 headers={
     "content-type": "application/json"
 }
-
+"""
 def dataBaseAdd(number):
     user = users.find_one({"number":number})
     if(user):
-        requests.put(f"{https://maskapp-backend.onrender.com/users}/{str(user['_id'])}",headers=headers)
+        requests.put(f"{url}/{str(user['_id'])}",{"cezapuani" : user["cezapuani"] + 10},headers=headers)
+        print(f"{url}/{str(user['_id'])}")
 """
+
+def dataBaseAdd(number):
+    user = users.find_one({"number": number})
+    if user:
+        updated_data = {"cezapuani" : user["cezapuani"] + 10}
+        requests.put(f"{url}/{str(user['_id'])}", data=json.dumps(updated_data), headers=headers)
+        print(f"{url}/{str(user['_id'])}")
+
+
   
 recognizer = cv2.face.LBPHFaceRecognizer_create()     #yüz tanıyıcı olusturuldu
 recognizer.read("face_yml/deneme.yml")                  #tanıyıcı deneme.yml dosyasını okuyacak
@@ -62,7 +73,7 @@ while(True):
             email = "032090079@ogr.uludag.edu.tr"
             if calistiC:
                 #sendMail(email)
-                #dataBaseAdd(number)
+                dataBaseAdd(number)
                 calistiC = False
         """
         elif(Id == 2):
@@ -108,12 +119,13 @@ while(True):
     #Yuz tanıma programının sonlandırılması.
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
+
+vid_cam.release()
+cv2.destroyAllWindows()
+
 plt.plot(accuracy_rates)
 plt.title('Accuracy Rate Over Time')
 plt.xlabel('Time')
 plt.ylim(20, 80)
 plt.ylabel('Accuracy Rate')
 plt.show()
-
-vid_cam.release()
-cv2.destroyAllWindows()
