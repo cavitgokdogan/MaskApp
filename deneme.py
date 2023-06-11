@@ -11,7 +11,7 @@ from PIL import Image
 tanıyıcı = cv2.face.LBPHFaceRecognizer_create() 
 
 #görüntülerdeki yuz alanlarını ayırmak için aşağıdaki xml filtresini kullanacağız
-dedektor = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+dedektor = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
 #görüntü etiketlerimizi almak için kullanacağımız fonksiyon
 def getImagesAndLabels(path):

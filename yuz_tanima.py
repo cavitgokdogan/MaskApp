@@ -23,7 +23,7 @@ def dataBaseAdd(number):
 taniyici = cv2.face.LBPHFaceRecognizer_create()     #yüz tanıyıcı olusturuldu
 taniyici.read("deneme/deneme.yml")                  #tanıyıcı deneme.yml dosyasını okuyacak
 
-yolsiniflandirici = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+yolsiniflandirici = "haarcascade_frontalface_default.xml"
 
 yuzsiniflandirici = cv2.CascadeClassifier(yolsiniflandirici)    #kullanılacak yol atandı
 #font = cv2.FONT_HERSHEY_SIMPLEX #yazi tipi belirlendi
