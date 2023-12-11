@@ -1,6 +1,4 @@
-""" kameraya gösterilen yüzleri, veri setimizdeki yüzlerle karşılaştırarak tanıyacak olan modül"""
-
-import cv2      #opencv kütüphanesi eklendi
+import cv2
 import numpy as np
 import requests
 import pymongo
@@ -35,17 +33,17 @@ def dataBaseAdd(number):
 """
 
   
-recognizer = cv2.face.LBPHFaceRecognizer_create()     #yüz tanıyıcı olusturuldu
-recognizer.read("face_yml/deneme.yml")                  #tanıyıcı deneme.yml dosyasını okuyacak
+recognizer = cv2.face.LBPHFaceRecognizer_create()    
+recognizer.read("face_yml/deneme.yml")                  
 
 yolsiniflandirici = "haarcascade_frontalface_default.xml"
 accuracy_rates = []
 
-yuzsiniflandirici = cv2.CascadeClassifier(yolsiniflandirici)    #kullanılacak yol atandı
-#font = cv2.FONT_HERSHEY_SIMPLEX #yazi tipi belirlendi
-vid_cam = cv2.VideoCapture(stream_url)   #(stream_url) Bilgisayara bağlı kameradan alınan görüntü vid_cam değişkenine atandı.
+yuzsiniflandirici = cv2.CascadeClassifier(yolsiniflandirici)
 
-#Kişilere aynı derste 1 kez ceza yazılması için flag yapısı kullanıldı.
+vid_cam = cv2.VideoCapture(stream_url)   
+
+
 calistiC = True
 calistiS = True
 calistiA = True
@@ -53,22 +51,20 @@ calistiM = True
 calistiAG = True
 
 while(True):
-    ret, kamera = vid_cam.read()    #vid_cam den okunan image kameraya atandı
-    gri = cv2.cvtColor(kamera, cv2.COLOR_BGR2GRAY)  #Kameradan alınan görüntü daha iyi bir tespit için BGR den gri ye çevirildi.
-    yuzler = yuzsiniflandirici.detectMultiScale(gri, 1.2, 5)    #gri tonlamanın alt üst(koyuluk) sınırları belirlendi
+    ret, kamera = vid_cam.read()    
+    gri = cv2.cvtColor(kamera, cv2.COLOR_BGR2GRAY)  
+    yuzler = yuzsiniflandirici.detectMultiScale(gri, 1.2, 5)    
 
     for(x, y, w, h) in yuzler:
-        cv2.rectangle(kamera, (x - 20, y - 20), (x + w + 20, y + h + 20), (0, 255, 0), 4)   #Yüzün çevresini çevreleyen dikdörtgen.
-        #Id ve conf degerini dondurur
+        cv2.rectangle(kamera, (x - 20, y - 20), (x + w + 20, y + h + 20), (0, 255, 0), 4)   
         Id, conf = recognizer.predict(gri[y: y+h, x: x+w])    #?????
 
         print(Id)
         accuracy_rate = 100 - conf
-        print(f"{accuracy_rate: .2f}") #Doğruluk oranı
+        print(f"{accuracy_rate: .2f}") 
         accuracy_rates.append(accuracy_rate)
         print("\n")
 
-        #Id leri tanıtılan kişilerin tanındıktan sonra ceza eklendiği kısım.
         
         if(Id == 1):
             name = "Cavit"
@@ -82,7 +78,7 @@ while(True):
             """
         
         elif(Id == 2):
-            name = "Seher"
+            name = "xxxx"
             number="032090010"
             email = "032090010@ogr.uludag.edu.tr"
             """
@@ -93,7 +89,7 @@ while(True):
             """
         
         elif(Id == 3):
-            name = "Badeser"
+            name = "dddddd"
             number = "032090007"
             email = "032090007@ogr.uludag.edu.tr"
             """
@@ -103,7 +99,7 @@ while(True):
                 dataBaseAdd(number)
             """
         elif(Id == 4):
-            name = "Sevval"
+            name = "bbbbbb"
             number = "032090020"
             email = "032090020@ogr.uludag.edu.tr"
             """
@@ -113,7 +109,7 @@ while(True):
                 dataBaseAdd(number)
             """
         elif(Id == 5):
-            name = "Ahmet"
+            name = "nnnnnn"
             number = "032090078"
             email = "032090078@ogr.uludag.edu.tr"
             """
@@ -122,21 +118,16 @@ while(True):
                 sendMail(email)
                 dataBaseAdd(number)
             """
-        
-        #yuz tanıma için cerceve ebatları belirlendi
+
         cv2.rectangle(kamera, (x - 22, y - 90), (x + w + 22, y - 22), (0, 255, 0), -1)
         
-        #yazılacak ismin boyutları,rengi ve kalınlığı belirlendi
         cv2.putText(kamera, str(name), (x - 30, y - 40), cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255), 3)
-
     
     win_name = "goruntu"
     cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
     cv2.resizeWindow(win_name, 800, 600)
 
-
-    cv2.imshow(win_name, kamera)    #Kameradan alınan görüntü ekranda gösterilir.
-    #Yuz tanıma programının sonlandırılması.
+    cv2.imshow(win_name, kamera)
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
 

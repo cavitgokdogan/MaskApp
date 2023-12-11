@@ -1,27 +1,18 @@
-"""veri setimizi eğittiğimiz modül"""
-
 from email.mime import image
 import cv2
 import os
 import numpy as np
 from PIL import Image
 
-#verisetimizin eğitimini aşağıdaki komutla tanıyıcı üzerinden yapacağız
 recognizer = cv2.face.LBPHFaceRecognizer_create() 
 
-#görüntülerdeki yuz alanlarını ayırmak için aşağıdaki xml filtresini kullanacağız
 detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
-#görüntü etiketlerimizi almak için kullanacağımız fonksiyon
 def getImagesAndLabels(path):
-    
-    #imagePaths listesi, path klasörü içinde yer alan dosyaların listesidir
     imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
-    yuzornekleri = []   #yuz görüntülerini tutacak liste
-    isimler = []        #her bir görüntünün etiketini tutacak liste
+    yuzornekleri = []   
+    isimler = []        
 
-    #imagePaths listesinin her bir elemanını kullanarak ilgili resmi okuyup
-    #griye dönüştürdük
     for imagePaths in imagePaths:
         #P[3] & L[1]
         PIL_img = Image.open(imagePaths).convert('L')
@@ -36,16 +27,13 @@ def getImagesAndLabels(path):
         #img_numpy görüntü numpy dizisinde bulunan yüz alanlarını bulup yuzler listesine attık
         yuzler = detector.detectMultiScale(img_numpy)
 
-        #yuzler listesini döngüye sokup her bir görüntüyü yuzornekleri,
-        #  ona karşılık gelen etiketi ise isimler listesine ekliyoruz.
         for(x, y, w, h) in yuzler:
             yuzornekleri.append(img_numpy[y:y + h, x: x + w])
             isimler.append(id)
 
     return yuzornekleri, isimler
 
-yuzler, isimler = getImagesAndLabels("veri")    #listelerimiz olustu
-recognizer.train(yuzler, np.array(isimler))   #veri setimizi eğitiyoruz
+yuzler, isimler = getImagesAndLabels("veri")
+recognizer.train(yuzler, np.array(isimler))
 
-#eğitilmiş veriseti bilgilerimizi; deneme klasörü içindeki deneme.yml dosyamıza kaydettik
 recognizer.save("face_yml/deneme.yml") 
