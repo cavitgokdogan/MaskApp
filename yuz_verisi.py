@@ -2,12 +2,13 @@
 
 import cv2      #opencv kütüphanesi eklendi
 
-vid_cam = cv2.VideoCapture(0)   #video kamera tanımlandı
+#stream_url = f"rtsp://SimaProject:Yumurta1@192.168.1.117:554/stream1"
+vid_cam = cv2.VideoCapture(0)   #(stream_url)video kamera tanımlandı
 
 face_detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
 faceName = 1    #her farklı yüz için farklı numara tanımlanacak
-number = 1        #çekilecek fotoğraf sayısı
+number = 1      #çekilecek fotoğraf sayısı
 
 while(True):
     _, frame = vid_cam.read()   #kamera okutuldu
@@ -27,7 +28,10 @@ while(True):
         cv2.imwrite("veri/User." + str(faceName) + '.' + str(number) + ".jpg", gray[y: y+h, x: x+w])
        
         #kameraya göster komutu atandı
-        cv2.imshow('cerceve' , frame)
+        win_name = "cerceve"
+        cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
+        cv2.resizeWindow(win_name, 800, 600)
+        cv2.imshow(win_name , frame)
 
         #kameradan çıkış tuşu ve gecikme süresi belirlendi
     if cv2.waitKey(20) & 0xFF == ord('q'):
